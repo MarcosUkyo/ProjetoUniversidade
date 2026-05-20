@@ -1,0 +1,100 @@
+﻿@using ProjetoUniversidade.Autenticacao
+@{
+    var isLogged = Context.Session.GetInt32(SessionKeys.UserId).HasValue;
+    var role = Context.Session.GetString(SessionKeys.UserRole);
+    var username = Context.Session.GetString(SessionKeys.UserName);
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Titulo"] - Universidade</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
+    <style>
+        /* estilos opcionais (caso não esteja usando site.css) */
+        body {
+            font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+            margin: 0;
+        }
+
+        .topnav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+            position: sticky;
+            top: 0;
+        }
+
+            .topnav a {
+                text-decoration: none;
+                color: #111;
+            }
+
+        .spacer {
+            flex: 1;
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: #2563eb;
+            text-decoration: underline;
+            padding: 6px 10px;
+            cursor: pointer;
+        }
+
+            .btn-link:hover {
+                background: #eff6ff;
+            }
+
+        .container {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="topnav">
+            <a asp-controller="Home" asp-action="Index">Início</a>
+            <a asp-controller="Departamento" asp-action="Index">Departamento</a>
+            <a asp-controller="Alunos" asp-action="Index">Alunos</a>
+            <a asp-controller="Professores" asp-action="Index">Professores</a>
+            <a asp-controller="Diciplinas" asp-action="Index">Diciplinas</a>
+            <a asp-controller="Turmas" asp-action="Index">Turmas</a>
+            <a asp-controller="Historico" asp-action="Index">Histórico</a>
+
+            @* somente admin vê usuários *@
+            @if (role == "Admin")
+            {
+                <a asp-controller="Usuario" asp-action="Index">Usuários</a>
+            }
+
+            <span class="spacer"></span>
+
+            @if (isLogged)
+            {
+                <span>Olá, @username!</span>
+                <form asp-controller="Auth" asp-action="Logout" method="post" style="display:inline">
+                    <button type="submit" class="btn-link">Sair</button>
+                </form>
+            }
+            else
+            {
+                <a asp-controller="Auth" asp-action="Login">Entrar</a>
+            }
+        </div>
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
