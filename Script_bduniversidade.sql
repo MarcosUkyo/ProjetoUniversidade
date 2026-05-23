@@ -9,13 +9,13 @@ USE bduniversidade;
 --  TABELAS
 -- ============================================================
 
--- Usuários do sistema (Admin / aluno / professor)
+-- Usuários do sistema (Reitor / aluno / professor)
 CREATE TABLE Usuarios (
     id           INT           PRIMARY KEY AUTO_INCREMENT,
     nome         VARCHAR(100)  NOT NULL,
     email        VARCHAR(100)  NOT NULL UNIQUE,
     senha_hash   VARCHAR(255)  NOT NULL,
-    role         ENUM('Admin','Aluno','Professor') NOT NULL DEFAULT 'Aluno',
+    role         ENUM('Reitor','Gerente','Aluno','Professor') NOT NULL DEFAULT 'Aluno',
     ativo        TINYINT(1)    NOT NULL DEFAULT 1,
     criado_em    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -407,13 +407,13 @@ DROP PROCEDURE IF EXISTS sp_historico_obter $$
 CREATE PROCEDURE sp_historico_obter(IN p_id INT)
 BEGIN
     SELECT h.id_historico, h.nota, h.frequencia_pct, h.situacao,
-           h.id_aluno, a.nome AS aluno_nome,
+           h.id_aluno, a.nome AS aluno_nome, a.ra,
            h.id_turma, t.semestre,
            d.nome AS disciplina_nome
     FROM historico h
-    LEFT JOIN aluno      a ON a.id_aluno       = h.id_aluno
-    LEFT JOIN turma      t ON t.id_turma       = h.id_turma
-    LEFT JOIN disciplina d ON d.id_disciplina  = t.id_disciplina
+    LEFT JOIN aluno      a ON a.id_aluno      = h.id_aluno
+    LEFT JOIN turma      t ON t.id_turma      = h.id_turma
+    LEFT JOIN disciplina d ON d.id_disciplina = t.id_disciplina
     WHERE h.id_historico = p_id LIMIT 1;
 END $$
 
@@ -458,10 +458,10 @@ DELIMITER ;
 --  Hash BCrypt gerado com work factor 11
 -- ============================================================
 CALL sp_usuario_criar(
-    'Administrador',
-    'admin@universidade.com',
+    'Reitor',
+    'reitor@universidade.com',
     '$2a$11$GjhjthUjYDusvIr01QLr6e/4hsIKJHWNmOcNgxKUoKHf0u0kTr4te',
-    'Admin'
+    'Reitor'
 );
  
 -- Verificar se atualizou
@@ -505,5 +505,4 @@ INSERT INTO historico (nota, frequencia_pct, situacao, id_aluno, id_turma) VALUE
     (9.50, 95.00, 'Aprovado',   3, 3);
 
 -- verificação final
-SELECT 'Banco criado com sucesso!' AS status;
 SELECT * FROM Usuarios;

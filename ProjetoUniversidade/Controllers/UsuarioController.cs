@@ -8,7 +8,8 @@ using System.Data;
 
 namespace ProjetoUniversidade.Controllers
 {
-    [SessionAuthorize(RoleAnyOf = "Admin")]
+    // Somente Reitor e Gerente podem gerenciar usuários
+    [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
     public class UsuarioController : Controller
     {
         private readonly Database _db = new Database();
@@ -69,13 +70,11 @@ namespace ProjetoUniversidade.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Editar(Usuario model)
         {
-            // Senha é opcional na edição
-            ModelState.Remove("SenhaHash");
+            ModelState.Remove("SenhaHash"); // Senha é opcional na edição
             if (!ModelState.IsValid) return View(model);
 
             using var conn = _db.GetConnection();
 
-            // Se digitou nova senha, atualiza o hash
             if (!string.IsNullOrWhiteSpace(model.SenhaHash))
             {
                 var hash = BCrypt.Net.BCrypt.HashPassword(model.SenhaHash);

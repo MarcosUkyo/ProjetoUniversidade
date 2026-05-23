@@ -1,5 +1,7 @@
 @model ProjetoUniversidade.Models.Usuario
-@{ ViewData["Title"] = "Novo Usuário"; }
+@{
+    ViewData["Title"] = "Novo Usuário";
+}
 
 <div class="page-header"><h1>Novo Usuário</h1></div>
 <div class="card" style="max-width:500px">
@@ -14,7 +16,7 @@
             </div>
             <div class="field" style="grid-column:span 2">
                 <label asp-for="Email"></label>
-                <input asp-for="Email" class="input" type="email" />
+                <input asp-for="Email" class="input" type="email" placeholder="email@universidade.com" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="field" style="grid-column:span 2">
@@ -23,13 +25,15 @@
                 <span asp-validation-for="SenhaHash" class="text-danger"></span>
             </div>
             <div class="field">
-                <label asp-for="Role"></label>
+                <label asp-for="Role">Papel</label>
                 <select asp-for="Role" class="select">
-                    <option value="Biblioteca">Biblioteca</option>
-                    <option value="Admin">Admin</option>
+                    <option value="Aluno">Aluno</option>
+                    <option value="Professor">Professor</option>
+                    <option value="Gerente">Gerente</option>
+                    <option value="Reitor">Reitor</option>
                 </select>
             </div>
-            <div class="field" style="justify-content:flex-end">
+            <div class="field" style="align-self:flex-end;padding-bottom:8px">
                 <label><input asp-for="Ativo" type="checkbox" /> Usuário ativo</label>
             </div>
         </div>
@@ -39,4 +43,9 @@
         </div>
     </form>
 </div>
-@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

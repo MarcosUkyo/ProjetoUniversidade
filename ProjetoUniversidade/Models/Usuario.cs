@@ -24,7 +24,7 @@ namespace ProjetoUniversidade.Models
         [Required(ErrorMessage = "O papel é obrigatório")]
         [StringLength(20)]
         [Display(Name = "Papel")]
-        public string Role { get; set; } = "Biblioteca";
+        public string Role { get; set; } = "Aluno";
 
         [Display(Name = "Ativo")]
         public bool Ativo { get; set; } = true;
