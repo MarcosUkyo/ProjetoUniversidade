@@ -639,23 +639,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\3amod\\.nuget\\packages\\": {},
+    "C:\\Users\\User\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\3amod\\Desktop\\ProjetoUniversidade\\ProjetoUniversidade\\ProjetoUniversidade.csproj",
+      "projectUniqueName": "C:\\Users\\User\\OneDrive\\Área de Trabalho\\ProjetoUniversidade\\ProjetoUniversidade\\ProjetoUniversidade.csproj",
       "projectName": "ProjetoUniversidade",
-      "projectPath": "C:\\Users\\3amod\\Desktop\\ProjetoUniversidade\\ProjetoUniversidade\\ProjetoUniversidade.csproj",
-      "packagesPath": "C:\\Users\\3amod\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\3amod\\Desktop\\ProjetoUniversidade\\ProjetoUniversidade\\obj\\",
+      "projectPath": "C:\\Users\\User\\OneDrive\\Área de Trabalho\\ProjetoUniversidade\\ProjetoUniversidade\\ProjetoUniversidade.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\OneDrive\\Área de Trabalho\\ProjetoUniversidade\\ProjetoUniversidade\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\3amod\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -664,7 +664,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -717,7 +716,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.313/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.314/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

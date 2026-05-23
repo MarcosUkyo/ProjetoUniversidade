@@ -1,0 +1,29 @@
+@model IEnumerable<ProjetoUniversidade.Models.Disciplina>
+@{ ViewData["Title"] = "Disciplinas"; }
+
+<div class="page-header">
+    <h1>Disciplinas</h1>
+    <a asp-action="Criar" class="btn btn-primary">+ Nova Disciplina</a>
+</div>
+<div class="card">
+    <table class="tbl">
+        <thead><tr><th>Código</th><th>Nome</th><th>Carga Horária</th><th>Departamento</th><th>Ações</th></tr></thead>
+        <tbody>
+        @foreach (var d in Model)
+        {
+            <tr>
+                <td><span class="badge badge-info">@d.Codigo</span></td>
+                <td>@d.Nome</td>
+                <td>@d.CargaHoraria h</td>
+                <td>@(d.DeptoNome ?? "-")</td>
+                <td>
+                    <a asp-action="Detalhes" asp-route-id="@d.IdDisciplina" class="btn btn-light btn-sm">Ver</a>
+                    <a asp-action="Editar"   asp-route-id="@d.IdDisciplina" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Excluir"  asp-route-id="@d.IdDisciplina" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Any()) { <tr><td colspan="5" style="text-align:center;color:#94a3b8">Nenhuma disciplina cadastrada.</td></tr> }
+        </tbody>
+    </table>
+</div>

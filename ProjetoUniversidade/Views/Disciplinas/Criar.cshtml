@@ -1,0 +1,37 @@
+@model ProjetoUniversidade.Models.Disciplina
+@{ ViewData["Title"] = "Nova Disciplina"; }
+
+<div class="page-header"><h1>Nova Disciplina</h1></div>
+<div class="card" style="max-width:600px">
+    <form asp-action="Criar" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-grid">
+            <div class="field">
+                <label asp-for="Codigo"></label>
+                <input asp-for="Codigo" class="input" placeholder="Ex: CC001" maxlength="10" />
+                <span asp-validation-for="Codigo" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="CargaHoraria"></label>
+                <input asp-for="CargaHoraria" class="input" type="number" min="1" placeholder="Ex: 60" />
+                <span asp-validation-for="CargaHoraria" class="text-danger"></span>
+            </div>
+            <div class="field" style="grid-column: span 2">
+                <label asp-for="Nome"></label>
+                <input asp-for="Nome" class="input" placeholder="Nome da disciplina" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="IdDepto">Departamento</label>
+                <select asp-for="IdDepto" asp-items="ViewBag.Departamentos" class="select">
+                    <option value="">(Selecione)</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

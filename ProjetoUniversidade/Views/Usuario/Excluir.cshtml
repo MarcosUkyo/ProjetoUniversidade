@@ -1,0 +1,20 @@
+@model ProjetoUniversidade.Models.Usuario
+@{ ViewData["Title"] = "Excluir Usuário"; }
+
+<div class="page-header"><h1>Excluir Usuário</h1></div>
+<div class="card" style="max-width:500px">
+    <div class="alert-error">Tem certeza que deseja excluir este usuário?</div>
+    <dl class="details">
+        <dt>Nome</dt><dd>@Model.Nome</dd>
+        <dt>E-mail</dt><dd>@Model.Email</dd>
+        <dt>Papel</dt><dd>@Model.Role</dd>
+    </dl>
+    <form asp-action="Excluir" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>

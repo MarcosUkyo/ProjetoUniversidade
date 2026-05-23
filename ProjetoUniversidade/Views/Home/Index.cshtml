@@ -1,8 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Início";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="card" style="text-align:center; padding: 40px 20px;">
+    <div style="font-size:3rem; margin-bottom:12px;">🎓</div>
+    <h1 style="margin-bottom:8px;">Sistema de Gestão Universitária</h1>
+    <p style="color:#64748b; font-size:1.05rem;">
+        Gerencie departamentos, professores, alunos, disciplinas, turmas e histórico acadêmico.
+    </p>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
+        <a asp-controller="Departamento" asp-action="Index" class="btn btn-primary">Departamentos</a>
+        <a asp-controller="Alunos"       asp-action="Index" class="btn btn-primary">Alunos</a>
+        <a asp-controller="Professores"  asp-action="Index" class="btn btn-primary">Professores</a>
+        <a asp-controller="Disciplinas"  asp-action="Index" class="btn btn-primary">Disciplinas</a>
+        <a asp-controller="Turmas"       asp-action="Index" class="btn btn-primary">Turmas</a>
+        <a asp-controller="Historico"    asp-action="Index" class="btn btn-primary">Histórico</a>
+    </div>
 </div>

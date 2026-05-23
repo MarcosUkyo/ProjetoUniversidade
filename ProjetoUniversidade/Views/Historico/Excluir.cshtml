@@ -1,0 +1,22 @@
+@model ProjetoUniversidade.Models.Historico
+@{ ViewData["Title"] = "Excluir Histórico"; }
+
+<div class="page-header"><h1>Excluir Histórico</h1></div>
+<div class="card" style="max-width:500px">
+    <div class="alert-error">Tem certeza que deseja excluir este registro?</div>
+    <dl class="details">
+        <dt>Aluno</dt><dd>@(Model.AlunoNome ?? "-")</dd>
+        <dt>Disciplina</dt><dd>@(Model.DisciplinaNome ?? "-")</dd>
+        <dt>Semestre</dt><dd>@(Model.Semestre ?? "-")</dd>
+        <dt>Nota</dt><dd>@Model.Nota.ToString("F2")</dd>
+        <dt>Situação</dt><dd>@Model.Situacao</dd>
+    </dl>
+    <form asp-action="Excluir" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.IdHistorico" />
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>

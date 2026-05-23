@@ -1,0 +1,29 @@
+@model IEnumerable<ProjetoUniversidade.Models.Professor>
+@{ ViewData["Title"] = "Professores"; }
+
+<div class="page-header">
+    <h1>Professores</h1>
+    <a asp-action="Criar" class="btn btn-primary">+ Novo Professor</a>
+</div>
+<div class="card">
+    <table class="tbl">
+        <thead><tr><th>Nome</th><th>CPF</th><th>Titulação</th><th>Departamento</th><th>Ações</th></tr></thead>
+        <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.Nome</td>
+                <td>@p.Cpf</td>
+                <td><span class="badge badge-info">@p.Titulacao</span></td>
+                <td>@(p.DeptoNome ?? "-")</td>
+                <td>
+                    <a asp-action="Detalhes" asp-route-id="@p.IdProfessor" class="btn btn-light btn-sm">Ver</a>
+                    <a asp-action="Editar"   asp-route-id="@p.IdProfessor" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Excluir"  asp-route-id="@p.IdProfessor" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Any()) { <tr><td colspan="5" style="text-align:center;color:#94a3b8">Nenhum professor cadastrado.</td></tr> }
+        </tbody>
+    </table>
+</div>

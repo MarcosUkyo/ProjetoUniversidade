@@ -1,75 +1,168 @@
-﻿@using ProjetoUniversidade.Autenticacao
+@using ProjetoUniversidade.Autenticacao
 @{
-    var isLogged = Context.Session.GetInt32(SessionKeys.UserId).HasValue;
-    var role = Context.Session.GetString(SessionKeys.UserRole);
-    var username = Context.Session.GetString(SessionKeys.UserName);
+    var isLogged  = Context.Session.GetInt32(SessionKeys.UserId).HasValue;
+    var role      = Context.Session.GetString(SessionKeys.UserRole);
+    var username  = Context.Session.GetString(SessionKeys.UserName);
 }
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Titulo"] - Universidade</title>
+    <title>@ViewData["Title"] – Universidade</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Styles", required: false)
     <style>
-        /* estilos opcionais (caso não esteja usando site.css) */
+        *, *::before, *::after { box-sizing: border-box; }
         body {
-            font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+            font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
             margin: 0;
+            background: #f4f6f9;
+            color: #1a1a2e;
         }
-
+        /* ---- Navbar ---- */
         .topnav {
             display: flex;
-            gap: 12px;
+            gap: 4px;
             align-items: center;
-            padding: 10px 16px;
-            border-bottom: 1px solid #eee;
-            background: #fff;
+            padding: 0 16px;
+            background: #1e3a5f;
             position: sticky;
             top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 6px rgba(0,0,0,.25);
+            flex-wrap: wrap;
         }
-
-            .topnav a {
-                text-decoration: none;
-                color: #111;
-            }
-
-        .spacer {
-            flex: 1;
+        .topnav .brand {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+            padding: 12px 12px 12px 0;
+            margin-right: 8px;
+            text-decoration: none;
+            white-space: nowrap;
         }
-
-        .btn-link {
-            background: none;
-            border: none;
-            color: #2563eb;
-            text-decoration: underline;
-            padding: 6px 10px;
-            cursor: pointer;
+        .topnav a:not(.brand) {
+            text-decoration: none;
+            color: #cbd5e1;
+            padding: 14px 10px;
+            font-size: .9rem;
+            transition: color .15s, background .15s;
         }
-
-            .btn-link:hover {
-                background: #eff6ff;
-            }
-
-        .container {
+        .topnav a:not(.brand):hover { color:#fff; background:rgba(255,255,255,.08); }
+        .spacer { flex: 1; }
+        .nav-user { color: #94a3b8; font-size: .85rem; padding: 0 8px; }
+        .btn-link-nav {
+            background: none; border: none;
+            color: #60a5fa; text-decoration: underline;
+            padding: 6px 10px; cursor: pointer; font-size: .9rem;
+        }
+        .btn-link-nav:hover { color: #93c5fd; }
+        /* ---- Container ---- */
+        .container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+        /* ---- Cards / Tables ---- */
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
             padding: 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.06);
         }
+        h1, h2 { margin-top: 0; }
+        .tbl {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .tbl th, .tbl td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .tbl thead th {
+            background: #f8fafc;
+            font-weight: 600;
+            border-bottom: 2px solid #cbd5e1;
+        }
+        .tbl tbody tr:hover { background: #f1f5f9; }
+        /* ---- Formulários ---- */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .field { display: flex; flex-direction: column; gap: 5px; }
+        .field label { font-weight: 600; font-size: .9rem; }
+        .input, .select {
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font: inherit;
+            width: 100%;
+        }
+        .input:focus, .select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+        }
+        .form-actions { display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+        /* ---- Botões ---- */
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 9px 16px;
+            border-radius: 8px; border: 1px solid transparent;
+            cursor: pointer; font: inherit; font-size: .9rem;
+            text-decoration: none;
+            transition: opacity .15s;
+        }
+        .btn:hover { opacity: .88; }
+        .btn-primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+        .btn-secondary { background: #64748b; color: #fff; border-color: #64748b; }
+        .btn-warning { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+        .btn-danger { background: #ef4444; color: #fff; border-color: #ef4444; }
+        .btn-light { background: #f1f5f9; color: #334155; border-color: #cbd5e1; }
+        .btn-sm { padding: 5px 10px; font-size: .82rem; }
+        /* ---- Alertas ---- */
+        .alert-ok {
+            background: #dcfce7; border: 1px solid #86efac;
+            color: #166534; padding: 10px 14px; border-radius: 8px;
+            margin-bottom: 14px;
+        }
+        .alert-error {
+            background: #fef2f2; border: 1px solid #fca5a5;
+            color: #991b1b; padding: 10px 14px; border-radius: 8px;
+            margin-bottom: 14px;
+        }
+        .text-danger { color: #ef4444; font-size: .82rem; }
+        /* ---- Badge situação ---- */
+        .badge {
+            display: inline-block;
+            padding: 3px 8px; border-radius: 20px;
+            font-size: .78rem; font-weight: 600;
+        }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-danger  { background: #fef2f2; color: #991b1b; }
+        .badge-warning { background: #fef9c3; color: #854d0e; }
+        .badge-info    { background: #dbeafe; color: #1e40af; }
+        /* ---- Misc ---- */
+        .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        hr { border: none; border-top: 1px solid #e2e8f0; margin: 12px 0; }
+        dl.details dt { font-weight: 600; color: #64748b; font-size: .85rem; }
+        dl.details dd { margin: 2px 0 12px 0; }
     </style>
 </head>
 <body>
     <header>
-        <div class="topnav">
-            <a asp-controller="Home" asp-action="Index">Início</a>
-            <a asp-controller="Departamento" asp-action="Index">Departamento</a>
-            <a asp-controller="Alunos" asp-action="Index">Alunos</a>
-            <a asp-controller="Professores" asp-action="Index">Professores</a>
-            <a asp-controller="Diciplinas" asp-action="Index">Diciplinas</a>
-            <a asp-controller="Turmas" asp-action="Index">Turmas</a>
-            <a asp-controller="Historico" asp-action="Index">Histórico</a>
+        <nav class="topnav">
+            <a class="brand" asp-controller="Home" asp-action="Index">🎓 Universidade</a>
+            <a asp-controller="Departamento" asp-action="Index">Departamentos</a>
+            <a asp-controller="Alunos"       asp-action="Index">Alunos</a>
+            <a asp-controller="Professores"  asp-action="Index">Professores</a>
+            <a asp-controller="Disciplinas"  asp-action="Index">Disciplinas</a>
+            <a asp-controller="Turmas"       asp-action="Index">Turmas</a>
+            <a asp-controller="Historico"    asp-action="Index">Histórico</a>
 
-            @* somente admin vê usuários *@
             @if (role == "Admin")
             {
                 <a asp-controller="Usuario" asp-action="Index">Usuários</a>
@@ -79,19 +172,24 @@
 
             @if (isLogged)
             {
-                <span>Olá, @username!</span>
+                <span class="nav-user">Olá, @username (@role)!</span>
                 <form asp-controller="Auth" asp-action="Logout" method="post" style="display:inline">
-                    <button type="submit" class="btn-link">Sair</button>
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn-link-nav">Sair</button>
                 </form>
             }
             else
             {
-                <a asp-controller="Auth" asp-action="Login">Entrar</a>
+                <a asp-controller="Auth" asp-action="Login" style="color:#60a5fa">Entrar</a>
             }
-        </div>
+        </nav>
     </header>
 
     <main class="container">
+        @if (TempData["ok"] != null)
+        {
+            <div class="alert-ok">@TempData["ok"]</div>
+        }
         @RenderBody()
     </main>
 

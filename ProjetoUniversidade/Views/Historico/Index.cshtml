@@ -1,0 +1,42 @@
+@model IEnumerable<ProjetoUniversidade.Models.Historico>
+@{ ViewData["Title"] = "Histórico Acadêmico"; }
+
+<div class="page-header">
+    <h1>Histórico Acadêmico</h1>
+    <a asp-action="Criar" class="btn btn-primary">+ Novo Registro</a>
+</div>
+<div class="card">
+    <table class="tbl">
+        <thead>
+            <tr><th>Aluno (RA)</th><th>Disciplina</th><th>Semestre</th><th>Nota</th><th>Freq. (%)</th><th>Situação</th><th>Ações</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var h in Model)
+        {
+            <tr>
+                <td>@(h.AlunoRa ?? "") – @(h.AlunoNome ?? "-")</td>
+                <td>@(h.DisciplinaNome ?? "-")</td>
+                <td><span class="badge badge-info">@(h.Semestre ?? "-")</span></td>
+                <td><strong>@h.Nota.ToString("F2")</strong></td>
+                <td>@h.FrequenciaPct.ToString("F1")%</td>
+                <td>
+                    @{
+                        var cls = h.Situacao switch {
+                            "Aprovado" => "badge-success",
+                            "Reprovado" => "badge-danger",
+                            _ => "badge-warning"
+                        };
+                    }
+                    <span class="badge @cls">@h.Situacao</span>
+                </td>
+                <td>
+                    <a asp-action="Detalhes" asp-route-id="@h.IdHistorico" class="btn btn-light btn-sm">Ver</a>
+                    <a asp-action="Editar"   asp-route-id="@h.IdHistorico" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Excluir"  asp-route-id="@h.IdHistorico" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Any()) { <tr><td colspan="7" style="text-align:center;color:#94a3b8">Nenhum registro encontrado.</td></tr> }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,37 @@
+@model ProjetoUniversidade.Models.Aluno
+@{ ViewData["Title"] = "Editar Aluno"; }
+
+<div class="page-header"><h1>Editar Aluno</h1></div>
+<div class="card" style="max-width:600px">
+    <form asp-action="Editar" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdAluno" />
+        <div class="form-grid">
+            <div class="field">
+                <label asp-for="Ra"></label>
+                <input asp-for="Ra" class="input" />
+                <span asp-validation-for="Ra" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Nome"></label>
+                <input asp-for="Nome" class="input" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Cpf"></label>
+                <input asp-for="Cpf" class="input" maxlength="11" />
+                <span asp-validation-for="Cpf" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="DataIngresso"></label>
+                <input asp-for="DataIngresso" class="input" type="date" />
+                <span asp-validation-for="DataIngresso" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

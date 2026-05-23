@@ -1,0 +1,42 @@
+@model ProjetoUniversidade.Models.Usuario
+@{ ViewData["Title"] = "Novo Usuário"; }
+
+<div class="page-header"><h1>Novo Usuário</h1></div>
+<div class="card" style="max-width:500px">
+    <form asp-action="Criar" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="alert-error"></div>
+        <div class="form-grid">
+            <div class="field" style="grid-column:span 2">
+                <label asp-for="Nome"></label>
+                <input asp-for="Nome" class="input" placeholder="Nome completo" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="field" style="grid-column:span 2">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="input" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="field" style="grid-column:span 2">
+                <label asp-for="SenhaHash">Senha</label>
+                <input asp-for="SenhaHash" class="input" type="password" autocomplete="new-password" />
+                <span asp-validation-for="SenhaHash" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Role"></label>
+                <select asp-for="Role" class="select">
+                    <option value="Biblioteca">Biblioteca</option>
+                    <option value="Admin">Admin</option>
+                </select>
+            </div>
+            <div class="field" style="justify-content:flex-end">
+                <label><input asp-for="Ativo" type="checkbox" /> Usuário ativo</label>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Criar Usuário</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

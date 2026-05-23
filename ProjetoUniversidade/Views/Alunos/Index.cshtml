@@ -1,0 +1,29 @@
+@model IEnumerable<ProjetoUniversidade.Models.Aluno>
+@{ ViewData["Title"] = "Alunos"; }
+
+<div class="page-header">
+    <h1>Alunos</h1>
+    <a asp-action="Criar" class="btn btn-primary">+ Novo Aluno</a>
+</div>
+<div class="card">
+    <table class="tbl">
+        <thead><tr><th>RA</th><th>Nome</th><th>CPF</th><th>Data de Ingresso</th><th>Ações</th></tr></thead>
+        <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td><span class="badge badge-info">@a.Ra</span></td>
+                <td>@a.Nome</td>
+                <td>@a.Cpf</td>
+                <td>@a.DataIngresso.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Detalhes" asp-route-id="@a.IdAluno" class="btn btn-light btn-sm">Ver</a>
+                    <a asp-action="Editar"   asp-route-id="@a.IdAluno" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Excluir"  asp-route-id="@a.IdAluno" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        }
+        @if (!Model.Any()) { <tr><td colspan="5" style="text-align:center;color:#94a3b8">Nenhum aluno cadastrado.</td></tr> }
+        </tbody>
+    </table>
+</div>

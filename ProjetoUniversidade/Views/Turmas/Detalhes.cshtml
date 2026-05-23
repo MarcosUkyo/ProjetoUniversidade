@@ -1,0 +1,15 @@
+@model ProjetoUniversidade.Models.Turma
+@{ ViewData["Title"] = "Detalhes da Turma"; }
+
+<div class="page-header"><h1>Turma</h1></div>
+<div class="card" style="max-width:500px">
+    <dl class="details">
+        <dt>Semestre</dt><dd><span class="badge badge-info">@Model.Semestre</span></dd>
+        <dt>Disciplina</dt><dd>@(Model.DisciplinaCodigo ?? "") – @(Model.DisciplinaNome ?? "-")</dd>
+        <dt>Professor</dt><dd>@(Model.ProfessorNome ?? "-")</dd>
+    </dl>
+    <div class="form-actions">
+        <a asp-action="Editar" asp-route-id="@Model.IdTurma" class="btn btn-warning">Editar</a>
+        <a asp-action="Index" class="btn btn-light">Voltar</a>
+    </div>
+</div>

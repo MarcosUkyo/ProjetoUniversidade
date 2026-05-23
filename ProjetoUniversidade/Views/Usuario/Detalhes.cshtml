@@ -1,0 +1,17 @@
+@model ProjetoUniversidade.Models.Usuario
+@{ ViewData["Title"] = "Detalhes do Usuário"; }
+
+<div class="page-header"><h1>Usuário</h1></div>
+<div class="card" style="max-width:500px">
+    <dl class="details">
+        <dt>Nome</dt><dd>@Model.Nome</dd>
+        <dt>E-mail</dt><dd>@Model.Email</dd>
+        <dt>Papel</dt><dd><span class="badge badge-info">@Model.Role</span></dd>
+        <dt>Status</dt><dd><span class="badge @(Model.Ativo ? "badge-success" : "badge-danger")">@(Model.Ativo ? "Ativo" : "Inativo")</span></dd>
+        <dt>Criado em</dt><dd>@Model.CriadoEm.ToString("dd/MM/yyyy HH:mm")</dd>
+    </dl>
+    <div class="form-actions">
+        <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+        <a asp-action="Index" class="btn btn-light">Voltar</a>
+    </div>
+</div>

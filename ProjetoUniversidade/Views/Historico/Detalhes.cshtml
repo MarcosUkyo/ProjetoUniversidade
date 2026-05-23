@@ -1,0 +1,18 @@
+@model ProjetoUniversidade.Models.Historico
+@{ ViewData["Title"] = "Detalhes do Histórico"; }
+
+<div class="page-header"><h1>Histórico</h1></div>
+<div class="card" style="max-width:500px">
+    <dl class="details">
+        <dt>Aluno</dt><dd>@(Model.AlunoRa ?? "") – @(Model.AlunoNome ?? "-")</dd>
+        <dt>Disciplina</dt><dd>@(Model.DisciplinaNome ?? "-")</dd>
+        <dt>Semestre</dt><dd><span class="badge badge-info">@(Model.Semestre ?? "-")</span></dd>
+        <dt>Nota</dt><dd><strong>@Model.Nota.ToString("F2")</strong></dd>
+        <dt>Frequência</dt><dd>@Model.FrequenciaPct.ToString("F1")%</dd>
+        <dt>Situação</dt><dd>@Model.Situacao</dd>
+    </dl>
+    <div class="form-actions">
+        <a asp-action="Editar" asp-route-id="@Model.IdHistorico" class="btn btn-warning">Editar</a>
+        <a asp-action="Index" class="btn btn-light">Voltar</a>
+    </div>
+</div>

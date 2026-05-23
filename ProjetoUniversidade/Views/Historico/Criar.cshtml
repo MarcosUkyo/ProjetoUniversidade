@@ -1,0 +1,48 @@
+@model ProjetoUniversidade.Models.Historico
+@{ ViewData["Title"] = "Novo Registro de Histórico"; }
+
+<div class="page-header"><h1>Novo Registro de Histórico</h1></div>
+<div class="card" style="max-width:640px">
+    <form asp-action="Criar" method="post">
+        @Html.AntiForgeryToken()
+        <div class="form-grid">
+            <div class="field">
+                <label asp-for="IdAluno">Aluno</label>
+                <select asp-for="IdAluno" asp-items="ViewBag.Alunos" class="select">
+                    <option value="">(Selecione)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label asp-for="IdTurma">Turma / Disciplina</label>
+                <select asp-for="IdTurma" asp-items="ViewBag.Turmas" class="select">
+                    <option value="">(Selecione)</option>
+                </select>
+            </div>
+            <div class="field">
+                <label asp-for="Nota"></label>
+                <input asp-for="Nota" class="input" type="number" step="0.01" min="0" max="10" placeholder="0.00 a 10.00" />
+                <span asp-validation-for="Nota" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="FrequenciaPct"></label>
+                <input asp-for="FrequenciaPct" class="input" type="number" step="0.01" min="0" max="100" placeholder="0 a 100" />
+                <span asp-validation-for="FrequenciaPct" class="text-danger"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Situacao"></label>
+                <select asp-for="Situacao" class="select">
+                    <option value="">(Selecione)</option>
+                    <option value="Aprovado">Aprovado</option>
+                    <option value="Reprovado">Reprovado</option>
+                    <option value="Trancado">Trancado</option>
+                </select>
+                <span asp-validation-for="Situacao" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a asp-action="Index" class="btn btn-light">Cancelar</a>
+        </div>
+    </form>
+</div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }
