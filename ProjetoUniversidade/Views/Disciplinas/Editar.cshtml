@@ -1,6 +1,5 @@
 @model ProjetoUniversidade.Models.Disciplina
 @{ ViewData["Title"] = "Editar Disciplina"; }
-
 <div class="page-header"><h1>Editar Disciplina</h1></div>
 <div class="card" style="max-width:600px">
     <form asp-action="Editar" method="post">
@@ -17,7 +16,7 @@
                 <input asp-for="CargaHoraria" class="input" type="number" min="1" />
                 <span asp-validation-for="CargaHoraria" class="text-danger"></span>
             </div>
-            <div class="field" style="grid-column: span 2">
+            <div class="field" style="grid-column:span 2">
                 <label asp-for="Nome"></label>
                 <input asp-for="Nome" class="input" />
                 <span asp-validation-for="Nome" class="text-danger"></span>

@@ -8,11 +8,12 @@ using System.Data;
 
 namespace ProjetoUniversidade.Controllers
 {
-    [SessionAuthorize]
+    [SessionAuthorize] // qualquer usuário logado pode acessar
     public class DepartamentoController : Controller
     {
         private readonly Database _db = new Database();
 
+        // Todos logados podem ver
         public IActionResult Index()
         {
             var lista = new List<Departamento>();
@@ -30,10 +31,22 @@ namespace ProjetoUniversidade.Controllers
             return View(lista);
         }
 
+        // Todos logados podem ver detalhes
         [HttpGet]
+        public IActionResult Detalhes(int id)
+        {
+            var model = ObterPorId(id);
+            if (model == null) return NotFound();
+            return View(model);
+        }
+
+        // Somente Reitor e Gerente podem criar/editar/excluir
+        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar() => View(new Departamento());
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar(Departamento model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -48,6 +61,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(int id)
         {
             var model = ObterPorId(id);
@@ -56,6 +70,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(Departamento model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -71,14 +86,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalhes(int id)
-        {
-            var model = ObterPorId(id);
-            if (model == null) return NotFound();
-            return View(model);
-        }
-
-        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Excluir(int id)
         {
             var model = ObterPorId(id);
@@ -87,6 +95,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ActionName("Excluir"), ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult ExcluirConfirmado(int id)
         {
             using var conn = _db.GetConnection();

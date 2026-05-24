@@ -1,8 +1,5 @@
 @model ProjetoUniversidade.Models.Usuario
-@{
-    ViewData["Title"] = "Novo Usuário";
-}
-
+@{ ViewData["Title"] = "Novo Usuário"; }
 <div class="page-header"><h1>Novo Usuário</h1></div>
 <div class="card" style="max-width:500px">
     <form asp-action="Criar" method="post">
@@ -43,9 +40,4 @@
         </div>
     </form>
 </div>
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-}
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

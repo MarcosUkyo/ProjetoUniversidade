@@ -1,54 +1,25 @@
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    ViewData["Title"] = "Acesso";
-}
-
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; ViewData["Title"] = "Acesso"; }
 <section class="login-wrap">
     <div style="text-align:center;font-size:2.5rem;margin-bottom:8px;">🎓</div>
     <h2 style="text-align:center;margin-bottom:20px;">Acesso ao Sistema</h2>
-
-    @if (ViewBag.Error != null)
-    {
-        <div class="alert-error">@ViewBag.Error</div>
-    }
-
+    @if (ViewBag.Error != null) { <div class="alert-error">@ViewBag.Error</div> }
     <form asp-action="Login" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
-
         <div class="form-field">
             <label>E-mail</label>
             <input type="email" name="email" class="input" required placeholder="seu@email.com" />
         </div>
-
         <div class="form-field">
             <label>Senha</label>
             <input type="password" name="senha" class="input" required placeholder="••••••••" />
         </div>
-
-        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center;">
-            Entrar
-        </button>
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:8px;justify-content:center;">Entrar</button>
     </form>
 </section>
-
 @section Styles {
-    <style>
-        .login-wrap {
-            max-width: 380px;
-            margin: 60px auto;
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 4px 16px rgba(0,0,0,.08);
-        }
-        .form-field { margin-bottom: 16px; }
-        .form-field label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            font-size: .9rem;
-        }
-    </style>
-}
+<style>
+    .login-wrap { max-width:380px; margin:60px auto; background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:32px; box-shadow:0 4px 16px rgba(0,0,0,.08); }
+    .form-field { margin-bottom:16px; }
+    .form-field label { display:block; margin-bottom:6px; font-weight:600; font-size:.9rem; }
+</style>}

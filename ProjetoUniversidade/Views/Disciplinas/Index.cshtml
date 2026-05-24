@@ -1,9 +1,12 @@
 @model IEnumerable<ProjetoUniversidade.Models.Disciplina>
-@{ ViewData["Title"] = "Disciplinas"; }
+@using ProjetoUniversidade.Autenticacao
+@{ ViewData["Title"] = "Disciplinas";
+   var _role = Context.Session.GetString(SessionKeys.UserRole);
+   bool _gerenciar = _role == "Reitor" || _role == "Gerente"; }
 
 <div class="page-header">
     <h1>Disciplinas</h1>
-    <a asp-action="Criar" class="btn btn-primary">+ Nova Disciplina</a>
+    @if (_gerenciar) { <a asp-action="Criar" class="btn btn-primary">+ Nova Disciplina</a> }
 </div>
 <div class="card">
     <table class="tbl">
@@ -18,8 +21,10 @@
                 <td>@(d.DeptoNome ?? "-")</td>
                 <td>
                     <a asp-action="Detalhes" asp-route-id="@d.IdDisciplina" class="btn btn-light btn-sm">Ver</a>
-                    <a asp-action="Editar"   asp-route-id="@d.IdDisciplina" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Excluir"  asp-route-id="@d.IdDisciplina" class="btn btn-danger btn-sm">Excluir</a>
+                    @if (_gerenciar) {
+                        <a asp-action="Editar"  asp-route-id="@d.IdDisciplina" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Excluir" asp-route-id="@d.IdDisciplina" class="btn btn-danger btn-sm">Excluir</a>
+                    }
                 </td>
             </tr>
         }

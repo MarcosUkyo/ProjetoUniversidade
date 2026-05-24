@@ -1,12 +1,11 @@
 @model ProjetoUniversidade.Models.Professor
 @{ ViewData["Title"] = "Novo Professor"; }
-
 <div class="page-header"><h1>Novo Professor</h1></div>
 <div class="card" style="max-width:600px">
     <form asp-action="Criar" method="post">
         @Html.AntiForgeryToken()
         <div class="form-grid">
-            <div class="field" style="grid-column: span 2">
+            <div class="field" style="grid-column:span 2">
                 <label asp-for="Nome"></label>
                 <input asp-for="Nome" class="input" placeholder="Nome completo" />
                 <span asp-validation-for="Nome" class="text-danger"></span>

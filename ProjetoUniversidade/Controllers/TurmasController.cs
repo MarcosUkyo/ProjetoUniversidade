@@ -27,6 +27,15 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        public IActionResult Detalhes(int id)
+        {
+            var model = ObterPorId(id);
+            if (model == null) return NotFound();
+            return View(model);
+        }
+
+        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar()
         {
             CarregarSelects();
@@ -34,6 +43,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar(Turma model)
         {
             if (!ModelState.IsValid) { CarregarSelects(); return View(model); }
@@ -49,6 +59,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(int id)
         {
             var model = ObterPorId(id);
@@ -58,6 +69,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(Turma model)
         {
             if (!ModelState.IsValid) { CarregarSelects(); return View(model); }
@@ -74,14 +86,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalhes(int id)
-        {
-            var model = ObterPorId(id);
-            if (model == null) return NotFound();
-            return View(model);
-        }
-
-        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Excluir(int id)
         {
             var model = ObterPorId(id);
@@ -90,6 +95,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ActionName("Excluir"), ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult ExcluirConfirmado(int id)
         {
             using var conn = _db.GetConnection();
@@ -116,7 +122,6 @@ namespace ProjetoUniversidade.Controllers
         {
             var disciplinas = new List<SelectListItem>();
             var professores = new List<SelectListItem>();
-
             using var conn = _db.GetConnection();
 
             using (var cmd = new MySqlCommand("sp_disciplina_listar", conn)

@@ -9,11 +9,13 @@ using System.Data;
 
 namespace ProjetoUniversidade.Controllers
 {
-    [SessionAuthorize]
+    // Aluno NÃO pode acessar esta seção — mínimo é Professor
+    [SessionAuthorize(RoleAnyOf = "Reitor,Gerente,Professor")]
     public class AlunosController : Controller
     {
         private readonly Database _db = new Database();
 
+        // Professor, Gerente e Reitor podem listar e ver detalhes
         public IActionResult Index()
         {
             var lista = new List<Aluno>();
@@ -27,9 +29,20 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        public IActionResult Detalhes(int id)
+        {
+            var model = ObterPorId(id);
+            if (model == null) return NotFound();
+            return View(model);
+        }
+
+        // Somente Reitor e Gerente podem criar/editar/excluir alunos
+        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar() => View(new Aluno { DataIngresso = DateTime.Today });
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar(Aluno model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -46,6 +59,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(int id)
         {
             var model = ObterPorId(id);
@@ -54,6 +68,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(Aluno model)
         {
             if (!ModelState.IsValid) return View(model);
@@ -71,14 +86,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalhes(int id)
-        {
-            var model = ObterPorId(id);
-            if (model == null) return NotFound();
-            return View(model);
-        }
-
-        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Excluir(int id)
         {
             var model = ObterPorId(id);
@@ -87,6 +95,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ActionName("Excluir"), ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult ExcluirConfirmado(int id)
         {
             using var conn = _db.GetConnection();
@@ -111,11 +120,11 @@ namespace ProjetoUniversidade.Controllers
 
         private static Aluno MapAluno(MySqlDataReader rd) => new Aluno
         {
-            IdAluno       = rd.GetInt32("id_aluno"),
-            Ra            = rd.GetString("ra"),
-            Nome          = rd.GetString("nome"),
-            Cpf           = rd.GetString("cpf"),
-            DataIngresso  = rd.GetDateTime("data_ingresso")
+            IdAluno      = rd.GetInt32("id_aluno"),
+            Ra           = rd.GetString("ra"),
+            Nome         = rd.GetString("nome"),
+            Cpf          = rd.GetString("cpf"),
+            DataIngresso = rd.GetDateTime("data_ingresso")
         };
     }
 }

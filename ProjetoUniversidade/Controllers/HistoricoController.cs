@@ -9,7 +9,7 @@ using System.Data;
 
 namespace ProjetoUniversidade.Controllers
 {
-    [SessionAuthorize]
+    [SessionAuthorize] // todos logados podem ver o histórico
     public class HistoricoController : Controller
     {
         private readonly Database _db = new Database();
@@ -27,6 +27,16 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        public IActionResult Detalhes(int id)
+        {
+            var model = ObterPorId(id);
+            if (model == null) return NotFound();
+            return View(model);
+        }
+
+        // Somente Reitor e Gerente podem criar registros
+        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar()
         {
             CarregarSelects();
@@ -34,6 +44,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar(Historico model)
         {
             if (!ModelState.IsValid) { CarregarSelects(); return View(model); }
@@ -50,19 +61,37 @@ namespace ProjetoUniversidade.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Reitor, Gerente E Professor podem editar notas/frequência
         [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente,Professor")]
         public IActionResult Editar(int id)
         {
             var model = ObterPorId(id);
             if (model == null) return NotFound();
             CarregarSelects();
+            // Informa à view se é Professor (para mostrar campos limitados)
+            ViewBag.IsProfessor = HttpContext.Session.GetString("UserRole") == "Professor";
             return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente,Professor")]
         public IActionResult Editar(Historico model)
         {
             if (!ModelState.IsValid) { CarregarSelects(); return View(model); }
+
+            var role = HttpContext.Session.GetString("UserRole");
+
+            // Professor só pode alterar nota, frequência e situação
+            // (aluno e turma ficam protegidos — buscamos os valores originais)
+            if (role == "Professor")
+            {
+                var original = ObterPorId(model.IdHistorico);
+                if (original == null) return NotFound();
+                model.IdAluno = original.IdAluno;
+                model.IdTurma = original.IdTurma;
+            }
+
             using var conn = _db.GetConnection();
             using var cmd = new MySqlCommand("sp_historico_editar", conn)
                 { CommandType = CommandType.StoredProcedure };
@@ -77,15 +106,9 @@ namespace ProjetoUniversidade.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Somente Reitor e Gerente podem excluir
         [HttpGet]
-        public IActionResult Detalhes(int id)
-        {
-            var model = ObterPorId(id);
-            if (model == null) return NotFound();
-            return View(model);
-        }
-
-        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Excluir(int id)
         {
             var model = ObterPorId(id);
@@ -94,6 +117,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ActionName("Excluir"), ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult ExcluirConfirmado(int id)
         {
             using var conn = _db.GetConnection();
@@ -120,7 +144,6 @@ namespace ProjetoUniversidade.Controllers
         {
             var alunos = new List<SelectListItem>();
             var turmas = new List<SelectListItem>();
-
             using var conn = _db.GetConnection();
 
             using (var cmd = new MySqlCommand("sp_aluno_listar", conn)

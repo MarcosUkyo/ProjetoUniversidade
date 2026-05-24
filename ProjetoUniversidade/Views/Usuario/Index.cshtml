@@ -7,35 +7,17 @@
 </div>
 <div class="card">
     <table class="tbl">
-        <thead>
-            <tr>
-                <th>Nome</th><th>E-mail</th><th>Papel</th>
-                <th>Status</th><th>Criado em</th><th>Ações</th>
-            </tr>
-        </thead>
+        <thead><tr><th>Nome</th><th>E-mail</th><th>Papel</th><th>Status</th><th>Criado em</th><th>Ações</th></tr></thead>
         <tbody>
         @foreach (var u in Model)
-        {
-            
-                var roleCss = u.Role switch {
-                    "Reitor"    => "role-reitor",
-                    "Gerente"   => "role-gerente",
-                    "Professor" => "role-professor",
-                    "Aluno"     => "role-aluno",
-                    _           => "role-aluno"
-                };
-            
-            <tr>
+            {
+
+                var rCss = u.Role switch { "Reitor" => "role-reitor", "Gerente" => "role-gerente", "Professor" => "role-professor", _ => "role-aluno" };
+                <tr>
                 <td>@u.Nome</td>
                 <td>@u.Email</td>
-                <td>
-                    <span class="nav-role @roleCss" style="display:inline-block">@u.Role</span>
-                </td>
-                <td>
-                    <span class="badge @(u.Ativo ? "badge-success" : "badge-danger")">
-                        @(u.Ativo ? "Ativo" : "Inativo")
-                    </span>
-                </td>
+                <td><span class="nav-role @rCss" style="display:inline-block">@u.Role</span></td>
+                <td><span class="badge @(u.Ativo ? "badge-success" : "badge-danger")">@(u.Ativo ? "Ativo" : "Inativo")</span></td>
                 <td>@u.CriadoEm.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>
                     <a asp-action="Detalhes" asp-route-id="@u.Id" class="btn btn-light btn-sm">Ver</a>
@@ -44,10 +26,7 @@
                 </td>
             </tr>
         }
-        @if (!Model.Any())
-        {
-            <tr><td colspan="6" style="text-align:center;color:#94a3b8">Nenhum usuário cadastrado.</td></tr>
-        }
+        @if (!Model.Any()) { <tr><td colspan="6" style="text-align:center;color:#94a3b8">Nenhum usuário cadastrado.</td></tr> }
         </tbody>
     </table>
 </div>

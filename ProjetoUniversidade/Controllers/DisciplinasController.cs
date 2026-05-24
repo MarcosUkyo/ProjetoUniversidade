@@ -27,6 +27,15 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        public IActionResult Detalhes(int id)
+        {
+            var model = ObterPorId(id);
+            if (model == null) return NotFound();
+            return View(model);
+        }
+
+        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar()
         {
             CarregarDepartamentos();
@@ -34,6 +43,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Criar(Disciplina model)
         {
             if (!ModelState.IsValid) { CarregarDepartamentos(); return View(model); }
@@ -50,6 +60,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(int id)
         {
             var model = ObterPorId(id);
@@ -59,6 +70,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Editar(Disciplina model)
         {
             if (!ModelState.IsValid) { CarregarDepartamentos(); return View(model); }
@@ -76,14 +88,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpGet]
-        public IActionResult Detalhes(int id)
-        {
-            var model = ObterPorId(id);
-            if (model == null) return NotFound();
-            return View(model);
-        }
-
-        [HttpGet]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult Excluir(int id)
         {
             var model = ObterPorId(id);
@@ -92,6 +97,7 @@ namespace ProjetoUniversidade.Controllers
         }
 
         [HttpPost, ActionName("Excluir"), ValidateAntiForgeryToken]
+        [SessionAuthorize(RoleAnyOf = "Reitor,Gerente")]
         public IActionResult ExcluirConfirmado(int id)
         {
             using var conn = _db.GetConnection();
@@ -132,12 +138,12 @@ namespace ProjetoUniversidade.Controllers
 
         private static Disciplina MapDisciplina(MySqlDataReader rd) => new Disciplina
         {
-            IdDisciplina  = rd.GetInt32("id_disciplina"),
-            Codigo        = rd.GetString("codigo"),
-            Nome          = rd.GetString("nome"),
-            CargaHoraria  = rd.GetInt32("carga_horaria"),
-            IdDepto       = rd.GetInt32("id_depto"),
-            DeptoNome     = rd["depto_nome"] as string
+            IdDisciplina = rd.GetInt32("id_disciplina"),
+            Codigo       = rd.GetString("codigo"),
+            Nome         = rd.GetString("nome"),
+            CargaHoraria = rd.GetInt32("carga_horaria"),
+            IdDepto      = rd.GetInt32("id_depto"),
+            DeptoNome    = rd["depto_nome"] as string
         };
     }
 }

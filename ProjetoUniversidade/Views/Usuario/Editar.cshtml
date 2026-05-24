@@ -1,8 +1,5 @@
 @model ProjetoUniversidade.Models.Usuario
-@{
-    ViewData["Title"] = "Editar Usuário";
-}
-
+@{ ViewData["Title"] = "Editar Usuário"; }
 <div class="page-header"><h1>Editar Usuário</h1></div>
 <div class="card" style="max-width:500px">
     <form asp-action="Editar" method="post">
@@ -21,8 +18,7 @@
             </div>
             <div class="field" style="grid-column:span 2">
                 <label asp-for="SenhaHash">Nova Senha (deixe em branco para manter)</label>
-                <input asp-for="SenhaHash" class="input" type="password" autocomplete="new-password"
-                       placeholder="Deixe vazio para não alterar" />
+                <input asp-for="SenhaHash" class="input" type="password" autocomplete="new-password" placeholder="Deixe vazio para não alterar" />
             </div>
             <div class="field">
                 <label asp-for="Role">Papel</label>
@@ -43,3 +39,4 @@
         </div>
     </form>
 </div>
+@section Scripts { @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} }

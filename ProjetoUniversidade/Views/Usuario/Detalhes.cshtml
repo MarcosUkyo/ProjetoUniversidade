@@ -1,35 +1,14 @@
 @model ProjetoUniversidade.Models.Usuario
-@{
-    ViewData["Title"] = "Detalhes do Usuário";
-}
-
+@{ ViewData["Title"] = "Detalhes do Usuário";
+   var rCss = Model.Role switch { "Reitor"=>"role-reitor","Gerente"=>"role-gerente","Professor"=>"role-professor",_=>"role-aluno" }; }
 <div class="page-header"><h1>Usuário</h1></div>
 <div class="card" style="max-width:500px">
-    @{
-        var roleCss = Model.Role switch
-        {
-            "Reitor" => "role-reitor",
-            "Gerente" => "role-gerente",
-            "Professor" => "role-professor",
-            "Aluno" => "role-aluno",
-            _ => "role-aluno"
-        };
-    }
     <dl class="details">
-        <dt>Nome</dt>
-        <dd>@Model.Nome</dd>
-        <dt>E-mail</dt>
-        <dd>@Model.Email</dd>
-        <dt>Papel</dt>
-        <dd><span class="nav-role @roleCss" style="display:inline-block">@Model.Role</span></dd>
-        <dt>Status</dt>
-        <dd>
-            <span class="badge @(Model.Ativo ? "badge-success" : "badge-danger")">
-                @(Model.Ativo ? "Ativo" : "Inativo")
-            </span>
-        </dd>
-        <dt>Criado em</dt>
-        <dd>@Model.CriadoEm.ToString("dd/MM/yyyy HH:mm")</dd>
+        <dt>Nome</dt><dd>@Model.Nome</dd>
+        <dt>E-mail</dt><dd>@Model.Email</dd>
+        <dt>Papel</dt><dd><span class="nav-role @rCss" style="display:inline-block">@Model.Role</span></dd>
+        <dt>Status</dt><dd><span class="badge @(Model.Ativo ? "badge-success" : "badge-danger")">@(Model.Ativo ? "Ativo" : "Inativo")</span></dd>
+        <dt>Criado em</dt><dd>@Model.CriadoEm.ToString("dd/MM/yyyy HH:mm")</dd>
     </dl>
     <div class="form-actions">
         <a asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>

@@ -1,24 +1,53 @@
 @model ProjetoUniversidade.Models.Historico
-@{ ViewData["Title"] = "Editar Histórico"; }
+@using ProjetoUniversidade.Autenticacao
+@{ ViewData["Title"] = "Editar Histórico";
+   bool isProfessor = ViewBag.IsProfessor == true; }
 
 <div class="page-header"><h1>Editar Histórico</h1></div>
 <div class="card" style="max-width:640px">
     <form asp-action="Editar" method="post">
         @Html.AntiForgeryToken()
         <input type="hidden" asp-for="IdHistorico" />
+
+        @if (isProfessor)
+        {
+            <!-- Professor: aluno e turma são somente leitura -->
+            <input type="hidden" asp-for="IdAluno" />
+            <input type="hidden" asp-for="IdTurma" />
+            <div class="form-grid">
+                <div class="field">
+                    <label>Aluno</label>
+                    <div class="readonly-info">@(Model.AlunoRa ?? "") – @(Model.AlunoNome ?? "-")</div>
+                </div>
+                <div class="field">
+                    <label>Disciplina / Semestre</label>
+                    <div class="readonly-info">@(Model.DisciplinaNome ?? "-") (@(Model.Semestre ?? "-"))</div>
+                </div>
+            </div>
+            <div class="alert-info" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:.9rem;">
+                ℹ️ Como professor, você pode editar apenas a nota, frequência e situação.
+            </div>
+        }
+        else
+        {
+            <!-- Reitor/Gerente: todos os campos -->
+            <div class="form-grid">
+                <div class="field">
+                    <label asp-for="IdAluno">Aluno</label>
+                    <select asp-for="IdAluno" asp-items="ViewBag.Alunos" class="select">
+                        <option value="">(Selecione)</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label asp-for="IdTurma">Turma / Disciplina</label>
+                    <select asp-for="IdTurma" asp-items="ViewBag.Turmas" class="select">
+                        <option value="">(Selecione)</option>
+                    </select>
+                </div>
+            </div>
+        }
+
         <div class="form-grid">
-            <div class="field">
-                <label asp-for="IdAluno">Aluno</label>
-                <select asp-for="IdAluno" asp-items="ViewBag.Alunos" class="select">
-                    <option value="">(Selecione)</option>
-                </select>
-            </div>
-            <div class="field">
-                <label asp-for="IdTurma">Turma / Disciplina</label>
-                <select asp-for="IdTurma" asp-items="ViewBag.Turmas" class="select">
-                    <option value="">(Selecione)</option>
-                </select>
-            </div>
             <div class="field">
                 <label asp-for="Nota"></label>
                 <input asp-for="Nota" class="input" type="number" step="0.01" min="0" max="10" />
